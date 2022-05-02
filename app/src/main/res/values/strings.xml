@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">L&amp;F</string>
+    <string name="ID">E-mail</string>
+    <string name="PW">비밀번호</string>
+    <string name="Login">로그인</string>
+    <string name="Register">회원가입</string>
+    <string name="nickname">닉네임</string>
+    <string name="check_pw">비밀번호 확인</string>
+</resources>
