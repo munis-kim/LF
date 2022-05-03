@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_bar_home"
+        android:icon="@drawable/ic_baseline_home"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/navigation_bar_camera"
+        android:icon="@drawable/ic_baseline_camera_alt_24"
+        android:title="@string/camera" />
+
+    <item
+        android:id="@+id/navigation_bar_GPS"
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:title="@string/gps" />
+    <item
+        android:id="@+id/navigation_bar_Profile"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        android:title="@string/profile" />
+
+</menu>

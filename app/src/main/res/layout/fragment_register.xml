@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="200dp"
             android:text="@string/ID"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:text="@={registerViewModel.userId}"
+            android:text="@={registerViewModel.userIdLiveData}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_check_pw"
@@ -61,7 +61,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="textPassword"
-            android:text="@={registerViewModel.passwd}"
+            android:text="@={registerViewModel.passwordLiveData}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_check_pw"
@@ -96,7 +96,7 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="textPassword"
-            android:text="@={registerViewModel.checkPasswd}"
+            android:text="@={registerViewModel.checkPasswordLiveData}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_check_pw"
@@ -109,11 +109,35 @@
             android:layout_marginEnd="16dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@={registerViewModel.nickname}"
+            android:text="@={registerViewModel.nicknameLiveData}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/input_check_pw"
             app:layout_constraintTop_toBottomOf="@+id/input_check_pw" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/name"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_nickname" />
+
+        <EditText
+            android:id="@+id/input_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@={registerViewModel.nameLiveData}"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/input_check_pw"
+            app:layout_constraintTop_toBottomOf="@+id/input_nickname" />
 
         <Button
             android:id="@+id/register_button"
@@ -124,7 +148,18 @@
             android:text="@string/Register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_nickname" />
+            app:layout_constraintTop_toBottomOf="@+id/input_name" />
+
+        <Button
+            android:id="@+id/go_login_button"
+            android:layout_width="240sp"
+            android:layout_height="40sp"
+            android:layout_marginTop="8dp"
+            android:onClick="@{() -> registerViewModel.onGoLogin()}"
+            android:text="@string/GoLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

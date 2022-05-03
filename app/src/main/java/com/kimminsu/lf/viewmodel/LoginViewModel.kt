@@ -1,49 +1,44 @@
 package com.kimminsu.lf.viewmodel
 
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kimminsu.lf.LoginStateListener
+import com.kimminsu.lf.repository.AuthRepository
+import com.kimminsu.lf.utils.SingleLiveEvent
 
 class LoginViewModel : ViewModel() {
-    var userId = MutableLiveData("")
-    var passwd = MutableLiveData("")
-    var isLogin = MutableLiveData(-1)
-    var isGoRegister = MutableLiveData(false)
+    var authRepository = AuthRepository.getInstance()
+    var userIdLiveData = MutableLiveData("")
+    var passwordLiveData = MutableLiveData("")
+    var isLoginLiveData = MutableLiveData(-1)
+    var isGoRegisterLiveData = SingleLiveEvent<Any>()
     private lateinit var auth: FirebaseAuth
 
-    fun onLogin(){
-        val userId = userId.value
-        val passwd = passwd.value
+    val GoRegister: LiveData<Any>
+        get() = isGoRegisterLiveData
 
-        if(userId?.isEmpty() == true) {
-            isLogin.value = 1
+    fun onLogin() {
+        val result: LoginStateListener
+        val userId = userIdLiveData.value!!
+        val password = passwordLiveData.value!!
+
+        if (userId.isEmpty()) {
+            isLoginLiveData.value = 1
             return
-        } else if(passwd?.isEmpty() == true){
-            isLogin.value = 2
+        } else if (password.isEmpty()) {
+            isLoginLiveData.value = 2
             return
         }
-
-        auth = Firebase.auth
-        if (userId != null && passwd != null) {
-            auth.signInWithEmailAndPassword(userId, passwd)
-                .addOnCompleteListener{ task ->
-                    if(task.isSuccessful){
-                        isLogin.value = 0
-                    }
-                    else{
-                        if(task.exception != null){
-                            isLogin.value = 3
-                        }
-                    }
-                }
-        }
+        isLoginLiveData.value = authRepository.login(userId, password)
+        Log.d("login", "login" + isLoginLiveData.value)
     }
 
-    fun onGoRegister(){
-        isGoRegister.value = true
+    fun onGoRegister() {
+        isGoRegisterLiveData.call()
     }
 }

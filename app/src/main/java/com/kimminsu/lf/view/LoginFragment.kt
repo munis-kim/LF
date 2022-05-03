@@ -1,6 +1,7 @@
 package com.kimminsu.lf.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,24 +26,22 @@ class LoginFragment : Fragment() {
     ): View? {
         val loginBinding: FragmentLoginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         val mainActivity = activity as MainActivity
+        mainActivity.hideBar(true)
         loginBinding.loginViewModel = loginViewModel
-
-
         val isLoginObserver = Observer<Int>{
-            if(it == 0)
+            if(it == 0) {
+                Log.d("Login", "Login")
+                Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
                 mainActivity.onFragmentChange(3)
+            }
             else if(it in 1..3)
                 showErrorMessage(it)
         }
 
-        val isGoRegisterObserver = Observer<Boolean>{
-            if(it == true)
-                mainActivity.onFragmentChange(2)
-        }
-
-        loginViewModel.isLogin.observe(viewLifecycleOwner, isLoginObserver)
-        loginViewModel.isGoRegister.observe(viewLifecycleOwner, isGoRegisterObserver)
-
+        loginViewModel.isLoginLiveData.observe(viewLifecycleOwner, isLoginObserver)
+        loginViewModel.isGoRegisterLiveData.observe(viewLifecycleOwner, Observer{
+            mainActivity.onFragmentChange(2)
+        })
         return loginBinding.root
     }
 
