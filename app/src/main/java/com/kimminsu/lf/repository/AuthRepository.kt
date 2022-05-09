@@ -2,9 +2,10 @@ package com.kimminsu.lf.repository
 
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.kimminsu.lf.LoginStateListener
-import kotlinx.coroutines.delay
+import com.kimminsu.lf.data.User
+import java.lang.Exception
 
 class AuthRepository private constructor() {
     companion object {
@@ -19,18 +20,49 @@ class AuthRepository private constructor() {
         }
     }
 
-    fun login(userId: String, password: String): Int {
-        var result = -1
+    fun login(userId: String, password: String, callback: (Int) -> Unit) {
         Firebase.auth.signInWithEmailAndPassword(userId, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    result = 0
+                    callback(0)
                 } else {
                     if (task.exception != null) {
-                        result = 3
+                        callback(3)
                     }
                 }
             }
-        return result
+        callback(-1)
+    }
+
+    fun register(
+        userId: String,
+        password: String,
+        nickname: String,
+        name: String,
+        callback: (Int) -> Unit
+    ) {
+        Firebase.auth.createUserWithEmailAndPassword(userId, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+                    val user = User(userId, nickname, name)
+                    db.collection("users").document(userId)
+                        .set(user)
+                        .addOnSuccessListener { callback(0) }
+                } else {
+                    try {
+                        task.result;
+                    } catch (e: Exception) {
+                        val tmp: String = e.toString()
+                        if (tmp.endsWith("account.")) {
+                            callback(8)
+                        }
+                    }
+                }
+            }
+    }
+
+    fun logout(){
+        Firebase.auth.signOut()
     }
 }

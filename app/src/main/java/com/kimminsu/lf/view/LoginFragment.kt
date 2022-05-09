@@ -26,11 +26,10 @@ class LoginFragment : Fragment() {
     ): View? {
         val loginBinding: FragmentLoginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         val mainActivity = activity as MainActivity
-        mainActivity.hideBar(true)
+        mainActivity.hideBar(true, true)
         loginBinding.loginViewModel = loginViewModel
         val isLoginObserver = Observer<Int>{
             if(it == 0) {
-                Log.d("Login", "Login")
                 Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
                 mainActivity.onFragmentChange(3)
             }

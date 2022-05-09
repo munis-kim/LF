@@ -8,6 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.kimminsu.lf.data.User
+import com.kimminsu.lf.repository.AuthRepository
 import com.kimminsu.lf.utils.SingleLiveEvent
 import java.lang.Exception
 
@@ -19,7 +20,7 @@ class RegisterViewModel : ViewModel() {
     var nameLiveData = MutableLiveData("")
     var isRegisterLiveData = MutableLiveData(-1)
     var isGoLoginLiveData = SingleLiveEvent<Any>()
-    private lateinit var auth: FirebaseAuth
+    var authRepository = AuthRepository.getInstance()
 
     val GoLogin: LiveData<Any>
         get() = isGoLoginLiveData
@@ -53,25 +54,9 @@ class RegisterViewModel : ViewModel() {
             isRegisterLiveData.value = 7
             return
         }
-        Firebase.auth.createUserWithEmailAndPassword(userId, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-                    val user = User(userId, nickname, name)
-                    db.collection("users").document(userId)
-                        .set(user)
-                        .addOnSuccessListener { isRegisterLiveData.value = 0 }
-                } else {
-                    try {
-                        task.result;
-                    } catch (e: Exception) {
-                        val tmp: String = e.toString()
-                        if (tmp.endsWith("account.")) {
-                            isRegisterLiveData.value = 8
-                        }
-                    }
-                }
-            }
+        authRepository.register(userId, password, nickname, name) { code ->
+            isRegisterLiveData.value = code
+        }
     }
 
     fun onGoLogin() {

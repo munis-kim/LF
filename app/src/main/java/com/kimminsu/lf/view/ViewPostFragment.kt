@@ -9,30 +9,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kimminsu.lf.MainActivity
 import com.kimminsu.lf.R
-import com.kimminsu.lf.databinding.FragmentMainBinding
-import com.kimminsu.lf.viewmodel.MainViewModel
+import com.kimminsu.lf.databinding.FragmentViewpostBinding
+import com.kimminsu.lf.viewmodel.ViewPostViewModel
 
-class MainFragment : Fragment() {
+class ViewPostFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by viewModels()
+    private val viewpostViewModel: ViewPostViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val mainBinding: FragmentMainBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false )
+        val viewpostBinding: FragmentViewpostBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_viewpost, container, false)
         val mainActivity = activity as MainActivity
         mainActivity.hideBar(false, false)
-        mainBinding.mainViewModel = mainViewModel
 
-        mainViewModel.isGoUploadLiveData.observe(viewLifecycleOwner) {
-            mainActivity.onFragmentChange(7)
-        }
+        viewpostBinding.viewpostViewModel = viewpostViewModel
 
 
-        return mainBinding.root
+        return viewpostBinding.root
     }
-
 
 }
