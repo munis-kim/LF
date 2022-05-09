@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -8,10 +8,6 @@
         <variable
             name="registerViewModel"
             type="com.kimminsu.lf.viewmodel.RegisterViewModel"/>
-
-        <variable
-            name="registerLogic"
-            type="com.kimminsu.lf.MainActivity" />
 
     </data>
 
@@ -119,12 +115,12 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="16dp"
             android:text="@string/name"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_nickname" />
+            app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
         <EditText
             android:id="@+id/input_name"

@@ -42,9 +42,9 @@ class RegisterFragment : Fragment() {
         }
 
         registerViewModel.isRegisterLiveData.observe(viewLifecycleOwner, isRegisterObserver)
-        registerViewModel.isGoLoginLiveData.observe(viewLifecycleOwner, Observer {
+        registerViewModel.isGoLoginLiveData.observe(viewLifecycleOwner) {
             mainActivity.onFragmentChange(1)
-        })
+        }
         return registerBinding.root
     }
 

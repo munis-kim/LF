@@ -5,9 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.kimminsu.lf.LoginStateListener
 import com.kimminsu.lf.repository.AuthRepository
 import com.kimminsu.lf.utils.SingleLiveEvent
 
@@ -23,7 +20,6 @@ class LoginViewModel : ViewModel() {
         get() = isGoRegisterLiveData
 
     fun onLogin() {
-        val result: LoginStateListener
         val userId = userIdLiveData.value!!
         val password = passwordLiveData.value!!
 
@@ -34,8 +30,11 @@ class LoginViewModel : ViewModel() {
             isLoginLiveData.value = 2
             return
         }
-        isLoginLiveData.value = authRepository.login(userId, password)
-        Log.d("login", "login" + isLoginLiveData.value)
+        authRepository.login(userId, password) {code ->
+            run {
+                isLoginLiveData.value = code
+            }
+        }
     }
 
     fun onGoRegister() {
