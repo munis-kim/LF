@@ -1,6 +1,5 @@
 package com.kimminsu.lf.repository
 
-import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -60,9 +59,5 @@ class AuthRepository private constructor() {
                     }
                 }
             }
-    }
-
-    fun logout(){
-        Firebase.auth.signOut()
     }
 }

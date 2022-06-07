@@ -9,11 +9,11 @@ import com.kimminsu.lf.repository.AuthRepository
 import com.kimminsu.lf.utils.SingleLiveEvent
 
 class LoginViewModel : ViewModel() {
-    var authRepository = AuthRepository.getInstance()
+    private var authRepository = AuthRepository.getInstance()
     var userIdLiveData = MutableLiveData("")
     var passwordLiveData = MutableLiveData("")
     var isLoginLiveData = MutableLiveData(-1)
-    var isGoRegisterLiveData = SingleLiveEvent<Any>()
+    private var isGoRegisterLiveData = SingleLiveEvent<Any>()
     private lateinit var auth: FirebaseAuth
 
     val GoRegister: LiveData<Any>

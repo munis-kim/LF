@@ -20,4 +20,10 @@
     <string name="upload">작성하기</string>
     <string name="location">위치</string>
     <string name="catalog">분류</string>
+    <string name="capture">사진 촬영</string>
+    <string name="search">검색</string>
+    <string name="previous">이전</string>
+    <string name="next">다음</string>
+    <string name="road">도로명</string>
+    <string name="address">지번</string>
 </resources>
