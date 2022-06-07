@@ -5,5 +5,4 @@ data class Post(
     val title: String?,
     val content: String?,
     val catalog: String?,
-
 )
