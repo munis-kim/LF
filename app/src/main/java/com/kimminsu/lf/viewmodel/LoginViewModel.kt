@@ -13,7 +13,7 @@ class LoginViewModel : ViewModel() {
     var userIdLiveData = MutableLiveData("")
     var passwordLiveData = MutableLiveData("")
     var isLoginLiveData = MutableLiveData(-1)
-    private var isGoRegisterLiveData = SingleLiveEvent<Any>()
+    var isGoRegisterLiveData = SingleLiveEvent<Any>()
     private lateinit var auth: FirebaseAuth
 
     val GoRegister: LiveData<Any>

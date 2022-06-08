@@ -33,7 +33,7 @@ class MapFragment : Fragment() {
 
         val isSuccessObserver = Observer<Int>{
             if(it == 0){
-                listMap = mapViewModel.MapData
+                //listMap = mapViewModel.MapData
                 adapter?.notifyDataSetChanged()
             }
         }
