@@ -45,11 +45,11 @@ class UploadFragment : Fragment() {
         uploadBinding.uploadViewModel = uploadViewModel
         mainActivity.hideBar(true, true)
 
-
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    handleCameraImage(result.data)
+                    result.data!!.extras
+                    uploadViewModel.setImage()
                 }
             }
 
@@ -59,7 +59,8 @@ class UploadFragment : Fragment() {
                     if(result.data != null){
                         Log.d("data", "${result.data!!.data as Uri}")
                     }
-                    onImageUpload()
+                    uploadViewModel.onImageUpload(result.data!!.data as Uri)
+                    //onImageUpload(result.data!!.data as Uri)
                 }
             }
 
@@ -67,13 +68,11 @@ class UploadFragment : Fragment() {
             onCamera()
         }
 
-
-        uploadViewModel.isImageUploadLiveData.observe(viewLifecycleOwner) {
+        uploadViewModel.isGalleryLiveData.observe(viewLifecycleOwner) {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             galleryLauncher.launch(galleryIntent)
         }
-
         return uploadBinding.root
     }
 
@@ -83,7 +82,7 @@ class UploadFragment : Fragment() {
 
         viewModel.navigateToLoadFail.observe(viewLifecycleOwner, Observer {
             run {
-                showErrorMessage()
+                showErrorMessage(1)
             }
         })
     }
@@ -100,12 +99,12 @@ class UploadFragment : Fragment() {
         })
     }
 
-    private fun showErrorMessage() {
-        Toast.makeText(context, "데이터 로드 실패", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onImageUpload() {
-
+    private fun showErrorMessage(errorCode: Int) {
+        val errorMessage: String = when (errorCode){
+            1 -> "데이터 로드 실패"
+            else -> "에러가 발생했습니다."
+        }
+        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     private fun onCamera(){
@@ -115,6 +114,7 @@ class UploadFragment : Fragment() {
 
     private fun handleCameraImage(intent: Intent?) {
         val bitmap = intent?.extras?.get("data") as Bitmap
+
 
     }
 }
