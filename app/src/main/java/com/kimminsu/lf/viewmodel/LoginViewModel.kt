@@ -40,4 +40,10 @@ class LoginViewModel : ViewModel() {
     fun onGoRegister() {
         isGoRegisterLiveData.call()
     }
+
+    fun clearLiveData() {
+        userIdLiveData.value = ""
+        passwordLiveData.value = ""
+        isLoginLiveData.value = -1
+    }
 }

@@ -59,6 +59,30 @@ class PostRepository private constructor() {
             .addOnFailureListener { callback(4) }
     }
 
+    fun loadMyPost(userId: String, callback: (ArrayList<Post>) -> Unit){
+        val storage = FirebaseFirestore.getInstance()
+        val postList = ArrayList<Post>()
+        storage.collection("posts")
+            .orderBy("uploadTime", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    if(userId != document["nickname"] as String) continue
+                    val uri = Uri.parse(document["image"] as String)
+                    val post = Post(
+                        document["nickname"] as String,
+                        document["title"] as String,
+                        document["content"] as String,
+                        document["catalog"] as String,
+                        document["uploadTime"] as String,
+                        uri
+                    )
+                    postList.add(post)
+                }
+                callback(postList)
+            }
+    }
+
     fun loadPost(callback: (ArrayList<Post>) -> Unit){
         val storage = FirebaseFirestore.getInstance()
         val postList = ArrayList<Post>()
@@ -67,6 +91,31 @@ class PostRepository private constructor() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
+                    val uri = Uri.parse(document["image"] as String)
+                    val post = Post(
+                        document["nickname"] as String,
+                        document["title"] as String,
+                        document["content"] as String,
+                        document["catalog"] as String,
+                        document["uploadTime"] as String,
+                        uri
+                    )
+                    postList.add(post)
+                }
+                callback(postList)
+            }
+    }
+
+    fun searchPost(search: String, callback: (ArrayList<Post>) -> Unit){
+        val storage = FirebaseFirestore.getInstance()
+        val postList = ArrayList<Post>()
+        storage.collection("posts")
+            .orderBy("uploadTime", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val str = document["title"] as String
+                    if(!str.contains(search)) continue
                     val uri = Uri.parse(document["image"] as String)
                     val post = Post(
                         document["nickname"] as String,

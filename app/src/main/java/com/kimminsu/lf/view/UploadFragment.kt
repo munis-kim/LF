@@ -1,9 +1,7 @@
 package com.kimminsu.lf.view
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -14,27 +12,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.kimminsu.lf.MainActivity
 import com.kimminsu.lf.R
 import com.kimminsu.lf.databinding.FragmentUploadBinding
-import com.kimminsu.lf.viewmodel.RecyclerViewModel
 import com.kimminsu.lf.viewmodel.UploadViewModel
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 
 class UploadFragment : Fragment() {
 

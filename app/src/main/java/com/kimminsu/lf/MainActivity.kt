@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             6 -> fragmentTransaction.replace(R.id.container, myProfileFragment)
             7 -> fragmentTransaction.replace(R.id.container, uploadFragment).addToBackStack(null)
             // 출력 테스트
-            8 -> fragmentTransaction.replace(R.id.container, viewpostFragment)
+            8 -> fragmentTransaction.replace(R.id.container, viewpostFragment).addToBackStack(null)
         }
         fragmentTransaction.commit()
     }

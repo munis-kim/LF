@@ -16,10 +16,11 @@ import com.kimminsu.lf.R
 import com.kimminsu.lf.data.Post
 import com.kimminsu.lf.databinding.FragmentMainBinding
 import com.kimminsu.lf.viewmodel.MainViewModel
+import com.kimminsu.lf.viewmodel.MyProfileViewModel
 
 class MainFragment : Fragment() {
     private val mainViewModel: MainViewModel by viewModels()
-
+    private val myProfileViewModel: MyProfileViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,8 +45,12 @@ class MainFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
             recyclerView.layoutManager = LinearLayoutManager(context)
 
-            val adapter = PostAdapter(postList)
+            val adapter = PostAdapter(mainViewModel, myProfileViewModel, postList, 0)
             mainBinding.postRecyclerView.adapter = adapter
+        }
+
+        mainViewModel.isPostClickLiveData.observe(viewLifecycleOwner){
+            mainActivity.onFragmentChange(8)
         }
 
 
