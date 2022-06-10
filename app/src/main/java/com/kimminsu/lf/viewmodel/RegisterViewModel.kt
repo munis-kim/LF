@@ -1,5 +1,6 @@
 package com.kimminsu.lf.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -56,6 +57,7 @@ class RegisterViewModel : ViewModel() {
         }
         authRepository.register(userId, password, nickname, name) { code ->
             isRegisterLiveData.value = code
+
         }
     }
 

@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kakao.util.maps.helper.Utility
 import com.kimminsu.lf.databinding.ActivityMainBinding
 import com.kimminsu.lf.utils.SetPermission
 import com.kimminsu.lf.view.*
