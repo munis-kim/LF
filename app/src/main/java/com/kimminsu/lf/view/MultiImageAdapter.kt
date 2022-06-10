@@ -1,6 +1,7 @@
 package com.kimminsu.lf.view
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kimminsu.lf.databinding.ImageRecyclerviewItemBinding
 
-class MultiImageAdapter: RecyclerView.Adapter<MultiImageAdapter.imageHolder>() {
+class MultiImageAdapter(val uri: List<Uri>): RecyclerView.Adapter<MultiImageAdapter.imageHolder>() {
     private lateinit var context: Context
     private var listData = mutableListOf<Uri>()
 
