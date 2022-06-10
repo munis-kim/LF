@@ -28,28 +28,27 @@ import com.kimminsu.lf.viewmodel.UploadViewModel
 class UploadFragment : Fragment() {
 
     private val uploadViewModel: UploadViewModel by viewModels()
-    lateinit var uploadBinding: FragmentUploadBinding
-    lateinit var viewModel: RecyclerViewModel
+    //lateinit var viewModel: RecyclerViewModel
     lateinit var galleryLauncher: ActivityResultLauncher<Intent>
-    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+    private var imageAdapter: MultiImageAdapter? = MultiImageAdapter(emptyList())
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        uploadBinding =
+        val uploadBinding: FragmentUploadBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_upload, container, false)
         val mainActivity = activity as MainActivity
-        viewModel = RecyclerViewModel(RecyclerViewModel.requestUpImage)
         uploadBinding.uploadViewModel = uploadViewModel
         mainActivity.hideBar(true, true)
 
-
-        resultLauncher =
+        cameraLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    handleCameraImage(result.data)
+                    val bitmap = result?.data?.extras?.get("data") as Bitmap
+                    uploadViewModel.setImage(bitmap)
                 }
             }
 
@@ -57,9 +56,8 @@ class UploadFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     if(result.data != null){
-                        Log.d("data", "${result.data!!.data as Uri}")
+                        uploadViewModel.onImageUpload(result.data!!.data as Uri)
                     }
-                    onImageUpload()
                 }
             }
 
@@ -68,36 +66,14 @@ class UploadFragment : Fragment() {
         }
 
 
-        uploadViewModel.isImageUploadLiveData.observe(viewLifecycleOwner) {
+        uploadViewModel.isGalleryLiveData.observe(viewLifecycleOwner) {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             galleryLauncher.launch(galleryIntent)
         }
 
+        uploadViewModel.imageLiveData.observe(viewLifecycleOwner, Observer{imageAdapter?.setDataList(it)})
         return uploadBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initImageList()
-
-        viewModel.navigateToLoadFail.observe(viewLifecycleOwner, Observer {
-            run {
-                showErrorMessage()
-            }
-        })
-    }
-
-    private fun initImageList() {
-        val imageListView: RecyclerView = uploadBinding.multiImage
-        val imageAdapter = MultiImageAdapter()
-        imageListView.adapter = imageAdapter
-        imageListView.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.dataList.observe(viewLifecycleOwner, Observer {
-            val dataList = it.filterIsInstance<Uri>()
-            Log.d("hoxy", "$dataList")
-            imageAdapter.setDataList(dataList)
-        })
     }
 
     private fun showErrorMessage() {
@@ -110,11 +86,7 @@ class UploadFragment : Fragment() {
 
     private fun onCamera(){
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        resultLauncher.launch(cameraIntent)
+        cameraLauncher.launch(cameraIntent)
     }
 
-    private fun handleCameraImage(intent: Intent?) {
-        val bitmap = intent?.extras?.get("data") as Bitmap
-
-    }
 }
