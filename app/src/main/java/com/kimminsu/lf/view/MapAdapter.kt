@@ -24,7 +24,7 @@ class MapAdapter: RecyclerView.Adapter<MapAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: MapRecyclerviewItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: RecyclerViewMap){
-            binding.map = data
+            //binding.map = data
         }
     }
 }

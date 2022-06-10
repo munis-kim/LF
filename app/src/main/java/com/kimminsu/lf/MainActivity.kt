@@ -5,10 +5,12 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kakao.util.maps.helper.Utility
 import com.kimminsu.lf.databinding.ActivityMainBinding
 import com.kimminsu.lf.utils.SetPermission
 import com.kimminsu.lf.view.*
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             6 -> fragmentTransaction.replace(R.id.container, myProfileFragment)
             7 -> fragmentTransaction.replace(R.id.container, uploadFragment).addToBackStack(null)
             // 출력 테스트
-            8 -> fragmentTransaction.replace(R.id.container, viewpostFragment)
+            8 -> fragmentTransaction.replace(R.id.container, viewpostFragment).addToBackStack(null)
         }
         fragmentTransaction.commit()
     }

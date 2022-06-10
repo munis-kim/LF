@@ -1,30 +1,38 @@
 package com.kimminsu.lf.viewmodel
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
+import android.provider.MediaStore
+import android.util.Log
+import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.kimminsu.lf.UserInfo
 import com.kimminsu.lf.repository.AuthRepository
+import com.kimminsu.lf.repository.PostRepository
 import com.kimminsu.lf.utils.SingleLiveEvent
-import java.io.File
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UploadViewModel : ViewModel() {
+    private var postRepository = PostRepository.getInstance()
     var titleLiveData = MutableLiveData("")
     var contentLiveData = MutableLiveData("")
+    var catalogLiveData = MutableLiveData("")
+    var imageLiveData = MutableLiveData<Uri?>()
+    var isUploadLiveData = MutableLiveData(-1)
+    var isLocationLiveData = MutableLiveData(-1)
+    var isImageUploadLiveData = MutableLiveData(false)
     var isGalleryLiveData = SingleLiveEvent<Any>()
     var isCameraLiveData = SingleLiveEvent<Any>()
-    val imageList = mutableListOf<Uri>()
-    private val imageListLiveData = MutableLiveData<List<Uri>>()
-    val imageLiveData: LiveData<List<Uri>> = imageListLiveData
 
-    val GoImageUpload: LiveData<Any>
+
+    val GoGallery: LiveData<Any>
         get() = isGalleryLiveData
 
     val GoCamera: LiveData<Any>
@@ -38,25 +46,102 @@ class UploadViewModel : ViewModel() {
         isGalleryLiveData.call()
     }
 
-    fun onUpload(){}
-
-    fun onImageUpload(data: Uri){
-        imageList.add(data)
-        imageListLiveData.value = imageList
+    fun setImage(data: Uri?){
+        imageLiveData.value = data
+        isImageUploadLiveData.value = true
+        catalogLiveData.value = "hi"
     }
 
-    fun setImage(data: Bitmap){
-        val fileName = "${System.currentTimeMillis()}.jpg"
+    @SuppressLint("SimpleDateFormat")
+    fun onUpload(){
+        val userId = UserInfo.userId!!
+        val title = titleLiveData.value!!
+        val content = contentLiveData.value!!
+        val catalog = catalogLiveData.value!!
+        val uploadTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())
+        var image = imageLiveData.value!!
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+        if(title.isEmpty()){
+            isUploadLiveData.value = 1
+            return
+        } else if(content.isEmpty()){
+            isUploadLiveData.value = 2
+            return
+        } else if(isImageUploadLiveData.value == false){
+            isUploadLiveData.value = 3
+            return
+        }
 
+        postRepository.uploadImage(userId, uploadTime, image) { code->
+            run{
+                image = code
+                postRepository.uploadPost(userId, title, content, catalog, uploadTime, image) {code ->
+                    run{
+                        isUploadLiveData.value = code
+                    }
+                }
+            }
         }
     }
-/*
-    @SuppressLint("SimpleDateFormat")
-    private fun createImageFile() : File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+
+    fun getImageUri(inContext: Context?, inImage: Bitmap?): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage?.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(inContext?.contentResolver, inImage, "Title" + " - " + Calendar.getInstance().time, null)
+        return Uri.parse(path)
+    }
+
+    fun clearLiveData(){
+        titleLiveData.value = ""
+        contentLiveData.value = ""
+        catalogLiveData.value = ""
+        imageLiveData.value = null
+        isUploadLiveData.value = -1
+        isImageUploadLiveData.value = false
 
     }
-*/
+
+
+    fun onImageUpload(data: Bitmap){
+        //val exif = ExifInterface(data)
+
+        val temp = ExifInterface.TAG_GPS_LATITUDE
+        Log.d("data", "$temp")
+    }
+
+    fun createCopyAndReturnRealPath(context: Context, uri: Uri) :String? {
+        val contentResolver = context.contentResolver ?: return null
+
+        val filePath = (context.applicationInfo.dataDir + File.separator
+                + System.currentTimeMillis())
+        val file = File(filePath)
+        try {
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val outputStream: OutputStream = FileOutputStream(file)
+            val buf = ByteArray(1024)
+            var len: Int
+            while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
+            outputStream.close()
+            inputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        Log.d("file", file.absolutePath)
+
+        getGps(file.absolutePath)
+
+        return file.absolutePath
+    }
+
+    private fun getGps(absolutePath: String) {
+        val exif = ExifInterface(absolutePath)
+        var temp: DoubleArray? = exif.latLong
+        Log.d("location", "$temp")
+        val latitude = exif.latLong?.get(0)
+        val longitude = exif.latLong?.get(1)
+        Log.d("latitude", "$latitude")
+        Log.d("longitude", "$longitude")
+    }
+
+
 }

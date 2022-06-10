@@ -14,7 +14,7 @@ class MapViewModel : ViewModel() {
         const val API_KEY = "7d79f659761b8b4ce3f69c0282d97370"
     }
 
-    var pageLiveData = MutableLiveData(1)
+    var pageLiveData = MutableLiveData("1")
     var isSuccessLiveData = MutableLiveData(-1)
     var searchLiveData = MutableLiveData("")
     var mapRepository = MapRepository.getInstance()
@@ -22,24 +22,25 @@ class MapViewModel : ViewModel() {
 
     fun onSearch() {
         MapLiveData.clear()
-        pageLiveData.value = 1
+        //pageLiveData.value = 1
         searchKeyword()
     }
 
     fun onPrevious() {
-        pageLiveData.value = pageLiveData.value?.minus(1)
+        //pageLiveData.value = pageLiveData.value?.minus(1)
         searchKeyword()
     }
 
     fun onNext() {
-        pageLiveData.value = pageLiveData.value?.plus(1)
+        //pageLiveData.value = pageLiveData.value?.plus(1)
         searchKeyword()
     }
 
     private fun searchKeyword() {
         mapRepository.searchKeyword(
             searchLiveData.value!!,
-            pageLiveData.value!!
+            //pageLiveData.value!!
+        1
         ) { code: Boolean, Map: Map? ->
             if (code && Map != null) {
                 for (document in Map.documents!!) {

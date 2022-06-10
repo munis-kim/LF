@@ -11,8 +11,6 @@ class SetPermission(private val activity: Activity, private val list: List<Strin
     fun checkPermissions() {
         if (isPermissionsGranted() != PackageManager.PERMISSION_GRANTED) {
             requestPermissions()
-        } else {
-            Toast.makeText(activity, "Permissions already granted", Toast.LENGTH_SHORT).show()
         }
     }
 

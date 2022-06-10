@@ -1,6 +1,7 @@
 package com.kimminsu.lf.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +33,11 @@ class RegisterFragment : Fragment() {
         registerBinding.registerViewModel = registerViewModel
 
         val isRegisterObserver = Observer<Int> {
+            Log.d("observer", "$it")
             if (it == 0) {
                 Toast.makeText(context, "회원가입 성공", Toast.LENGTH_SHORT).show()
                 mainActivity.onFragmentChange(1)
                 registerViewModel.clearLiveData()
-
             } else if (it in 1..8)
                 showErrorMessage(it)
         }

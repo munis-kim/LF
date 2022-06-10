@@ -31,6 +31,7 @@ class LoginFragment : Fragment() {
         val isLoginObserver = Observer<Int>{
             if(it == 0) {
                 Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+                loginViewModel.clearLiveData()
                 mainActivity.onFragmentChange(3)
             }
             else if(it in 1..3)
