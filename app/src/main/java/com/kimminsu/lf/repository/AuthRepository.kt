@@ -1,8 +1,10 @@
 package com.kimminsu.lf.repository
 
+import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.kimminsu.lf.UserInfo
 import com.kimminsu.lf.data.User
 import java.lang.Exception
 
@@ -23,6 +25,7 @@ class AuthRepository private constructor() {
         Firebase.auth.signInWithEmailAndPassword(userId, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    UserInfo.userId = userId
                     callback(0)
                 } else {
                     if (task.exception != null) {

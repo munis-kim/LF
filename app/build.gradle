@@ -41,7 +41,7 @@ android {
             enable true
             reset()
             include 'x86', 'x86_64', 'armeabi-v7a', 'armeabi'
-            universalApk false
+            universalApk true
         }
     }
 }
@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
