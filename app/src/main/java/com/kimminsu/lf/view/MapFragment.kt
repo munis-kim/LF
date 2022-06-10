@@ -40,11 +40,11 @@ class MapFragment : Fragment() {
         }
 
          */
-        val mapView = MapView(activity)
+//        val mapView = MapView(activity)
         val mapViewContainer = mapBinding.mapView as ViewGroup
-        mapViewContainer.addView(mapView)
+ //       mapViewContainer.addView(mapView)
 
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
+   //     mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304), true);
 
         return mapBinding.root
     }

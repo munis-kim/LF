@@ -42,6 +42,7 @@ class UploadFragment : Fragment() {
         val mainActivity = activity as MainActivity
         uploadBinding.uploadViewModel = uploadViewModel
         mainActivity.hideBar(true, true)
+        uploadViewModel.clearLiveData()
 
         val isUploadObserver = Observer<Int>{
             if(it == 0){
@@ -100,7 +101,9 @@ class UploadFragment : Fragment() {
 
     private fun showErrorMessage(errorCode: Int) {
         val errorMessage: String = when (errorCode){
-            1 -> "데이터 로드 실패"
+            1 -> "제목을 입력해주세요."
+            2 -> "내용을 입력해주세요."
+            3 -> "사진을 입력해주세요."
             else -> "에러가 발생했습니다."
         }
         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()

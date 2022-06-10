@@ -59,7 +59,7 @@ class UploadViewModel : ViewModel() {
         val content = contentLiveData.value!!
         val catalog = catalogLiveData.value!!
         val uploadTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())
-        var image = imageLiveData.value!!
+        var image = imageLiveData.value
 
         if(title.isEmpty()){
             isUploadLiveData.value = 1
@@ -72,12 +72,16 @@ class UploadViewModel : ViewModel() {
             return
         }
 
-        postRepository.uploadImage(userId, uploadTime, image) { code->
-            run{
-                image = code
-                postRepository.uploadPost(userId, title, content, catalog, uploadTime, image) {code ->
-                    run{
-                        isUploadLiveData.value = code
+        if (image != null) {
+            postRepository.uploadImage(userId, uploadTime, image) { code->
+                run{
+                    image = code
+                    postRepository.uploadPost(userId, title, content, catalog, uploadTime,
+                        image!!
+                    ) { code ->
+                        run{
+                            isUploadLiveData.value = code
+                        }
                     }
                 }
             }
