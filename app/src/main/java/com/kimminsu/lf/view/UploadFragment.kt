@@ -29,7 +29,7 @@ class UploadFragment : Fragment() {
 
     private val uploadViewModel: UploadViewModel by viewModels()
     lateinit var uploadBinding: FragmentUploadBinding
-    lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
