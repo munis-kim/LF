@@ -11,9 +11,9 @@ import com.kimminsu.lf.repository.PostRepository
 import com.kimminsu.lf.utils.SingleLiveEvent
 
 class MainViewModel : ViewModel() {
+    var postList = ArrayList<Post>()
     private var postRepository = PostRepository.getInstance()
     var isGoUploadLiveData = SingleLiveEvent<Any>()
-    var postList = ArrayList<Post>()
     var isLoadLiveData = SingleLiveEvent<Any>()
     var isPostClickLiveData = SingleLiveEvent<Any>()
 
@@ -25,6 +25,7 @@ class MainViewModel : ViewModel() {
 
     val GoPost: LiveData<Any>
         get() = isPostClickLiveData
+
 
     fun onGoUpload() {
         isGoUploadLiveData.call()
@@ -45,5 +46,17 @@ class MainViewModel : ViewModel() {
         PostInfo.uploadTime = post.uploadTime
         PostInfo.image = post.image
         isPostClickLiveData.call()
+    }
+
+    fun onSearch(searchWord: String?) {
+        if(searchWord == null) {
+            loadPost()
+        } else {
+            postRepository.searchPost(searchWord) { result ->
+                postList = result
+                isLoadLiveData.call()
+            }
+        }
+
     }
 }

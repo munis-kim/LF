@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -14,6 +15,8 @@ import com.kakao.util.maps.helper.Utility
 import com.kimminsu.lf.databinding.ActivityMainBinding
 import com.kimminsu.lf.utils.SetPermission
 import com.kimminsu.lf.view.*
+import com.kimminsu.lf.viewmodel.MainViewModel
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,11 +26,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var myProfileFragment: MyProfileFragment
     private lateinit var uploadFragment: UploadFragment
     private lateinit var mapFragment: MapFragment
-    // 출력 테스트
     private lateinit var viewpostFragment: ViewPostFragment
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityMainBinding
     private lateinit var managePermissions: SetPermission
+    private lateinit var search: SearchView
     private val PermissionRequestCode = 123
 
     override fun onDestroy() {
@@ -45,10 +48,11 @@ class MainActivity : AppCompatActivity() {
         myProfileFragment = MyProfileFragment()
         uploadFragment = UploadFragment()
         mapFragment = MapFragment()
-        // 테스트
         viewpostFragment = ViewPostFragment()
         binding = ActivityMainBinding.inflate(layoutInflater)
         auth = Firebase.auth
+        val topBar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.topToolBar)
+        search = findViewById(R.id.search_view)
         setContentView(binding.root)
         val list = listOf<String>(
             Manifest.permission.CAMERA,
@@ -62,8 +66,22 @@ class MainActivity : AppCompatActivity() {
         }
         managePermissions.processPermissionsResult()
         if (!managePermissions.processPermissionsResult()) {
-            //finish()
+            exitProcess(0)
         }
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return if (query != null) {
+                    mainFragment.search(query)
+                    true
+                } else false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText == "")
+                    mainFragment.search(newText)
+                return false
+            }
+        })
         onClickBottomBar()
     }
 
@@ -139,4 +157,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }

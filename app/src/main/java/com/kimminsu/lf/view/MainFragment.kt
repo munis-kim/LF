@@ -57,5 +57,9 @@ class MainFragment : Fragment() {
         return mainBinding.root
     }
 
+    fun search(searchWord: String?){
+        mainViewModel.onSearch(searchWord)
+    }
+
 
 }
