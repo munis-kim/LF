@@ -10,9 +10,7 @@ import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
 import com.kimminsu.lf.UserInfo
-import com.kimminsu.lf.repository.AuthRepository
 import com.kimminsu.lf.repository.PostRepository
 import com.kimminsu.lf.utils.SingleLiveEvent
 import java.io.*
@@ -26,7 +24,6 @@ class UploadViewModel : ViewModel() {
     var catalogLiveData = MutableLiveData("")
     var imageLiveData = MutableLiveData<Uri?>()
     var isUploadLiveData = MutableLiveData(-1)
-    var isLocationLiveData = MutableLiveData(-1)
     var isImageUploadLiveData = MutableLiveData(false)
     var isGalleryLiveData = SingleLiveEvent<Any>()
     var isCameraLiveData = SingleLiveEvent<Any>()
@@ -49,7 +46,7 @@ class UploadViewModel : ViewModel() {
     fun setImage(data: Uri?){
         imageLiveData.value = data
         isImageUploadLiveData.value = true
-        catalogLiveData.value = "hi"
+        catalogLiveData.value = ""
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -106,13 +103,6 @@ class UploadViewModel : ViewModel() {
     }
 
 
-    fun onImageUpload(data: Bitmap){
-        //val exif = ExifInterface(data)
-
-        val temp = ExifInterface.TAG_GPS_LATITUDE
-        Log.d("data", "$temp")
-    }
-
     fun createCopyAndReturnRealPath(context: Context, uri: Uri) :String? {
         val contentResolver = context.contentResolver ?: return null
 
@@ -132,12 +122,12 @@ class UploadViewModel : ViewModel() {
         }
         Log.d("file", file.absolutePath)
 
-        getGps(file.absolutePath)
+        checkImagePosition(file.absolutePath)
 
         return file.absolutePath
     }
 
-    private fun getGps(absolutePath: String) {
+    private fun checkImagePosition(absolutePath: String) {
         val exif = ExifInterface(absolutePath)
         var temp: DoubleArray? = exif.latLong
         Log.d("location", "$temp")

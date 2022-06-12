@@ -1,6 +1,7 @@
 package com.kimminsu.lf.viewmodel
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kimminsu.lf.PostInfo
@@ -12,11 +13,12 @@ class ViewPostViewModel : ViewModel() {
     var contentLiveData = MutableLiveData("")
     var isModifyLiveData = SingleLiveEvent<Any>()
     var isDeleteLiveData = SingleLiveEvent<Any>()
-    fun onModify(){
+
+    fun onModify() {
 
     }
 
-    fun onDelete(){
+    fun onDelete() {
 
     }
 
