@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1095784495760",
+    "project_id": "lost-and-found-app-fb0d2",
+    "storage_bucket": "lost-and-found-app-fb0d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095784495760:android:774af4d58a8bb45bac3615",
+        "android_client_info": {
+          "package_name": "com.kimminsu.lf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095784495760-8jhel37sr8gfreser9i7d8ji5ns9bj0p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kimminsu.lf",
+            "certificate_hash": "d5504f30485a81f2026e6875299c2af239e1cf82"
+          }
+        },
+        {
+          "client_id": "1095784495760-h8k0t108u9545ehrqe01tjtr7lkvq394.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kimminsu.lf",
+            "certificate_hash": "c0d4c1610fc342aa6bcd4900de4c8dd491aab1c0"
+          }
+        },
+        {
+          "client_id": "1095784495760-pkoom0pb55vnh02vm6u2ffgnke0el6ua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfkDPlYoLQj0Q3oCRlMl24paLGZ9iXP7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095784495760-pkoom0pb55vnh02vm6u2ffgnke0el6ua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
